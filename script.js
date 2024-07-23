@@ -6,7 +6,6 @@ form.addEventListener('submit', function(event) {
     event.preventDefault()
     const formResponse = new FormData(document.querySelector('form'))
     let book = new Book(formResponse)
-    lib.add(book)
     form.reset()
     dialog.close()
 })
@@ -73,8 +72,12 @@ function Book(entries) {
     this.author = entries.get('author');
     this.read = entries.get('read');
     this.id = lib.books.length+1
+    lib.add(this)
     this.updateRead = function() {
-        this.read = this.read == 'Read' ? 'Unread' : 'Read'
+        this.read = this.read == 'Read' ? 'Not read yet' : 'Read'
+    }
+    this.createFromApi = function(object) {
+
     }
 }
 
@@ -87,11 +90,12 @@ function addListeners(book) {
         e.target.textContent = bookElem.read
     })
     removeButton.addEventListener('click', function (e) {
-        let bookElem = lib.books.find(book => book.title == getId(e.target))
+        let bookElem = lib.books.find(book => book.id == getId(e.target))
         e.target.parentElement.classList.remove('add-book')
         e.target.parentElement.classList.add('remove-book')
         lib.remove(bookElem)
         setTimeout(() => booksDiv.removeChild(e.target.parentElement), 450)
+        console.log(lib.books)
     })
 }
 
@@ -114,6 +118,23 @@ document.querySelectorAll('.book-remove').forEach(button => button.addEventListe
     lib.remove(bookElem)
 }))
 
+function transformResponse(response) {
+    let formData = new FormData()
+    formData.append('title', response.title)
+    formData.append('pages', response.pageCount)
+    formData.append('year', new Date(response.publishedDate).getFullYear())
+    formData.append('author', response.authors[0])
+    formData.append('read', 'Not read yet')
+    return formData
+}
+
+async function getRandomBooks() {
+    let response = await fetch('https://www.googleapis.com/books/v1/users/118196310033155438839/bookshelves/0/volumes')
+    data = await response.json()
+    console.log(data)
+    data.items.forEach(item => console.log(new Book(transformResponse(item.volumeInfo))))
+    }
+getRandomBooks()
 
 
 

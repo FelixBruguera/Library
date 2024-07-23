@@ -56,6 +56,7 @@ header > #example-books {
     background-color: white;
     box-shadow: 1px 1px 3px;
     min-width: 10%;
+    max-width: 20%;
 }
 .book:hover {
     transform: scale(1.1);
@@ -112,5 +113,5 @@ form {
         opacity: 0%;}
 }
 .book-title {
-    text-overflow: clip;
+    text-overflow: ellipsis;
 }
