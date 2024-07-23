@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #F0F2F5;
+}
+header {
+    text-align: center;
+    height: 40%;
+    background-color: skyblue;
+    margin-bottom: 5%;
+    display: grid;
+    grid-template: 1fr / 2fr 6fr 2fr;
+    align-items: center;
+    justify-items: center;
+    padding: 1%;
+}
+header > h1 {
+    margin: 0;
+    grid-area: 1 / 2 / 1 / 2;
+}
+header > #new-book {
+    grid-area: 1 / 3 / 1 / 3;
+    height: fit-content;
+    padding: 2%;
+    width: fit-content;
+}
+header > #example-books {
+    grid-area: 1 / 1 / 1 / 1;
+    height: fit-content;
+    padding: 2%;
+    width: fit-content;
+
+}
+.books {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.books-animation {
+    animation: slidein 5s ease-in-out;
+}
+@keyframes slidein {
+    0% {
+        opacity: 5%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+.book {
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    box-shadow: 1px 1px 3px;
+    min-width: 10%;
+}
+.book:hover {
+    transform: scale(1.1);
+    border: 1px solid skyblue;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+.dialog-info {
+    display: grid;
+    grid-template: 1fr / 5fr 1fr;
+    align-items: center;
+}
+.dialog-info > h3 {
+    grid-area: 1 / 1 / 1 / 3;
+}
+.dialog-info > button {
+    grid-area: 1 / 2 / 1 / 2;
+}
+.book-read {
+    background-color: white;
+    border-radius: 30px;
+    padding: 7px;
+}
+.book-read:hover {
+    background-color: lightgrey;
+}
+.book-remove {
+    padding: 5px;
+    border-radius: 15px;
+    background-color: white;
+}
+.book-remove:hover {
+    background-color: red;
+}
+.add-book {
+    animation: add 0.5s ease-in-out;
+}
+@keyframes add {
+    0% {transform: translateY(-100px);
+        opacity: 5%;}
+    90% {transform: translateY(50px);
+        opacity: 100%;}
+    100% {transform: translateY(0);}
+}
+.remove-book {
+    animation: remove 0.5s ease-in-out;
+}
+@keyframes remove {
+    0% {transform: translateY(0px);
+        opacity: 100%;}
+    100% {transform: translateY(-100px);
+        opacity: 0%;}
+}
+.book-title {
+    text-overflow: clip;
+}

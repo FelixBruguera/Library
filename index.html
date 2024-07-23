@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Books</h1>
+        <button id="new-book">New Book</button>
+        <button id="example-books">Add example books</button>
+        <dialog>
+            <div class="dialog-info">
+                <h3>New book</h3>
+                <button id="close-dialog">X</button>
+            </div>
+            <form action="">
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="">
+                <label for="author">Author: </label>
+                <input type="text" name="author" id="">
+                <label for="year">Release year: </label>
+                <input type="number" name="year" id="" maxlength="4">
+                <label for="pages">Number of pages: </label>
+                <input type="number" name="pages" id="">
+                <label for="read">Have you read it?: </label>
+                <span class="radio-input">
+                    <label for="true">Yes</label>
+                    <input type="radio" name="read" value="Read" id="true" checked>
+                    <label for="false">No</label>
+                    <input type="radio" name="read" value="Unread" id="false">
+                </span>
+                <input type="submit" value="Save">
+            </form>
+        </dialog>
+    </header>
+    <section class="books">
+    </section>
+</body>
+</html>
