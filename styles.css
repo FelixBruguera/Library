@@ -37,6 +37,8 @@ header > #example-books {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
+    margin: 5%;
+    gap: 20px;
 }
 .books-animation {
     animation: slidein 5s ease-in-out;
@@ -55,11 +57,14 @@ header > #example-books {
     text-align: center;
     background-color: white;
     box-shadow: 1px 1px 3px;
-    min-width: 10%;
-    max-width: 20%;
+    width: 20%;
+}
+.no-image-book > h2 {
+    height: 40%;
+
 }
 .book:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     border: 1px solid skyblue;
 }
 form {
@@ -114,4 +119,12 @@ form {
 }
 .book-title {
     text-overflow: ellipsis;
+    text-wrap: pretty;
+    text-overflow: ellipsis;
+    height: 55px;
+    overflow: hidden;
+}
+img {
+    height: 30dvh;
+    width: 10dvw;
 }

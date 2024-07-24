@@ -6,6 +6,7 @@ form.addEventListener('submit', function(event) {
     event.preventDefault()
     const formResponse = new FormData(document.querySelector('form'))
     let book = new Book(formResponse)
+    lib.add(book)
     form.reset()
     dialog.close()
 })
@@ -29,28 +30,16 @@ function newElement(elemType, elemContent, elemClass) {
     return elem
     }
 
-// const exampleBooks =[new Book('Lord of Rings', 200, 1985, 'J.R.R. Tolkien', false),
-//                     new Book('Another Book', 10, 2024, 'Someone', true)]
-
 function Library() {
     this.books = []
     this.show = function(book) {
-        console.log(book.title)
         let container = newElement('div', '', 'book')
-        let title = newElement('h2', book.title, 'book-title')
-        let pages = newElement('p', book.pages+' Pages', 'book-pages')
-        let year = newElement('p', book.year, 'book-year')
-        let author = newElement('p', book.author, 'book-author')
-        let readElem = newElement('button', book.read, 'book-read')
-        let removeElem = newElement('button', 'Remove', 'book-remove')
-        let elements = [title, pages, year, author, readElem, removeElem]
+        let elements = book.makeElements()
         for (let elem of elements) { container.appendChild(elem) }
-    container.dataset.id = book.id
-    container.classList.add('add-book')
-    booksDiv.appendChild(container)
-    addListeners(container)
-    // booksDiv.classList.remove('books-animation')
-    // booksDiv.classList.add('books-animation')
+        container.dataset.id = book.id
+        container.classList.add('add-book')
+        booksDiv.appendChild(container)
+        addListeners(container)
    }
    this.add = function(book) {
         this.books.push(book)
@@ -58,12 +47,9 @@ function Library() {
    }
    this.remove = function(book) {
         let index = this.books.indexOf(book)
-        console.log(index)
         this.books.splice(index, 1)
-        console.log(this.books)
    }
 }
-let lib = new Library()
 
 function Book(entries) {
     this.title = entries.get('title');
@@ -71,24 +57,34 @@ function Book(entries) {
     this.year = entries.get('year');
     this.author = entries.get('author');
     this.read = entries.get('read');
+    this.image = entries.get('image')
     this.id = lib.books.length+1
-    lib.add(this)
     this.updateRead = function() {
         this.read = this.read == 'Read' ? 'Not read yet' : 'Read'
     }
-    this.createFromApi = function(object) {
-
+    this.makeElements = function() {
+        let title = newElement('h2', this.title, 'book-title')
+        let pages = newElement('p', this.pages+' Pages', 'book-pages')
+        let year = newElement('p', this.year, 'book-year')
+        let author = newElement('p', this.author, 'book-author')
+        let readElem = newElement('button', this.read, 'book-read')
+        let removeElem = newElement('button', 'Remove', 'book-remove')
+        let image = newElement('img', '' , 'book-img')
+        if (this.image != undefined) { image.src = this.image}
+        else {image.src = "images/book-cover-placeholder.png"}
+        let elements = [image, title, author, pages, year, readElem, removeElem]
+        return elements
     }
-}
+}   
 
 function addListeners(book) {
     let readButton = book.querySelector('.book-read')
-    let removeButton = book.querySelector('.book-remove')
     readButton.addEventListener('click', function (e) {
         let bookElem = lib.books.find(book => book.id == getId(e.target))
         bookElem.updateRead()
         e.target.textContent = bookElem.read
     })
+    let removeButton = book.querySelector('.book-remove')
     removeButton.addEventListener('click', function (e) {
         let bookElem = lib.books.find(book => book.id == getId(e.target))
         e.target.parentElement.classList.remove('add-book')
@@ -100,23 +96,11 @@ function addListeners(book) {
 }
 
 
-
-// const newB = new Book('lala', 1, 1234, 'lolo', false)
 dialog.setup()
-// lib.add(newB)
 
 function getId(button) {
     return button.parentElement.dataset.id
 }
-
-document.querySelectorAll('.book-read').forEach(elem => elem.addEventListener('click', function (e) {
-    console.log(lib.books.find(book => book.title == getTitle(e.target)))}
-))
-
-document.querySelectorAll('.book-remove').forEach(button => button.addEventListener('click', function (e) {
-    let bookElem = lib.books.find(book => book.title == getTitle(e.target))
-    lib.remove(bookElem)
-}))
 
 function transformResponse(response) {
     let formData = new FormData()
@@ -125,15 +109,16 @@ function transformResponse(response) {
     formData.append('year', new Date(response.publishedDate).getFullYear())
     formData.append('author', response.authors[0])
     formData.append('read', 'Not read yet')
+    formData.append('image', response.imageLinks.thumbnail)
     return formData
 }
 
 async function getRandomBooks() {
     let response = await fetch('https://www.googleapis.com/books/v1/users/118196310033155438839/bookshelves/0/volumes')
     data = await response.json()
-    console.log(data)
-    data.items.forEach(item => console.log(new Book(transformResponse(item.volumeInfo))))
+    data.items.forEach(item => lib.add(new Book(transformResponse(item.volumeInfo))))
     }
+let lib = new Library()
 getRandomBooks()
 
 
