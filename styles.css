@@ -92,6 +92,7 @@ dialog {
     display: grid;
     grid-template: 1fr / 5fr 1fr;
     align-items: center;
+    justify-items: center;
 }
 .dialog-info > h3 {
     grid-area: 1 / 1 / 1 / 3;
@@ -155,6 +156,15 @@ button {
 #close-dialog, #save-form {
     min-height: 1rem;
 }
+#close-dialog {
+    background-color: rgb(50,50,50);
+    color: white;
+    border: none;
+}
+#close-dialog:hover {
+    padding: 5% 30%;
+    border: 1px solid white;
+}
 input {
     border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: rgb(100,100,100);
@@ -183,7 +193,7 @@ input {
 }
 @media (max-width: 500px) {
     .book {
-        width: 35%;
+        width: 60%;
     }
     img {
         width: 20dvw;
