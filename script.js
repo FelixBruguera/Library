@@ -27,8 +27,17 @@ let dialog = {
             event.preventDefault()
             let formResponse = new FormData(document.querySelector('form'))
             lib.add( new Book(formResponse) )
-            this.reset()
             dialog.close()
+            this.reset()
+        })
+    },
+    addValidation: function() {
+        let submit = document.querySelector("#save-form")
+        submit.addEventListener("click", (e) => {
+            if (this.form.checkValidity() == false) {
+                e.preventDefault()
+                this.form.reportValidity()
+            }
         })
     }
 }
@@ -56,7 +65,7 @@ class Library {
    }
 }
 
-class Book extends Library{
+class Book{
     constructor(entries) {
         this.title = entries.get('title');
         this.pages = entries.get('pages');
@@ -123,6 +132,7 @@ class googleBooksAPI {
 let lib = new Library()
 let api = new googleBooksAPI()
 dialog.addListeners()
+dialog.addValidation()
 exampleBooks.addEventListener("click", () => api.randomBooks())
 
 

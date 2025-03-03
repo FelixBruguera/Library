@@ -125,6 +125,7 @@ dialog {
     100% {transform: translateY(-100px);
         opacity: 0%;}
 }
+
 .book-title {
     text-overflow: ellipsis;
     text-wrap: pretty;
